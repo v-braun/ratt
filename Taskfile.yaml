@@ -1,0 +1,37 @@
+# https://taskfile.dev
+
+version: '3'
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  build-cli:
+    dir: './cli/'
+    cmds:
+      - go build -o ../.build/ratt-cli/ratt ./
+    sources:
+      - ../cli/**/*.go
+      - ../pkg/**/*.go
+      - ../.example-configs/*.hcl
+  dev-cli:
+    deps: [build-cli]
+    dir: './.build/ratt-cli/'
+    cmds:
+      - cp ../../.example-configs/repository.hcl ./repository.hcl
+      - cp ../../.example-configs/main.hcl ./main.hcl
+      - ./ratt run
+
+#   dev-exec:
+#     deps: [build]
+#     dir: './build'
+#     cmds:
+#       - ./ratt exec create_user --arg firstName="Mickey" --arg lastName="Mouse"
+
+#   dev-test-task:
+#     deps: [build]
+#     dir: './build'
+#     cmds:
+#       - ./ratt dummy
+#     # silent: true
+
+# # go build . && ./ratt
